@@ -1,10 +1,10 @@
 class TweetsController < ApplicationController
+  before_action :set_tweet, only: %i[show edit update destroy]
   def index
     @tweets = Tweet.all
   end
 
   def show
-    @tweet = Tweet.find(params[:id])
   end
 
   def new
@@ -14,9 +14,6 @@ class TweetsController < ApplicationController
   def create
     @tweet = Tweet.create(tweet_params)
     if @tweet.save
-      # @tweet.title = params[:tweet][:title]
-      # @tweet.content = params[:tweet][:content]
-      # # @tweet.save
       redirect_to new_tweet_path, notice: 'tweetしました'
     else
       render :new
@@ -24,21 +21,28 @@ class TweetsController < ApplicationController
   end
 
   def edit
-    @tweet = Tweet.find(params[:id])
   end
 
   def update
-    @tweet = Tweet.find(params[:id])
     if @tweet.update(tweet_params)
-      redirect_to tweets_path, notice: "ツイートを編集しました！"
+      redirect_to tweets_path, notice: 'ツイートを編集しました！'
     else
       render :edit
     end
+  end
+
+  def destroy
+    @tweet.destroy
+    redirect_to tweets_path, notice: 'ツイートを削除しました！'
   end
 
   private
 
   def tweet_params
     params.require(:tweet).permit(:title, :content)
+  end
+
+  def set_tweet
+    @tweet = Tweet.find(params[:id])
   end
 end
