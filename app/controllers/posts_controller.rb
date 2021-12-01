@@ -33,7 +33,7 @@ class PostsController < ApplicationController
 
   def destroy
     @post.destroy
-    redirect_to posts_path, notice: 'ツイートを削除しました！'
+    redirect_to posts_path, notice: 'ポストを削除しました！'
   end
 
   def confirm
